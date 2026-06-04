@@ -85,7 +85,14 @@ class SafeDocumentReference {
   }
 
   collection(subCollName: string) {
-    const realSubColl = this.realDocRef ? this.realDocRef.collection(subCollName) : null;
+    let realSubColl = null;
+    try {
+      if (this.realDocRef && typeof this.realDocRef.collection === "function") {
+        realSubColl = this.realDocRef.collection(subCollName);
+      }
+    } catch (err) {
+      console.warn(`Firestore collection retrieval failed for subcollection ${subCollName}:`, err);
+    }
     return new SafeCollectionReference(`${this.collPath}/${this.docId}/${subCollName}`, realSubColl);
   }
 }
@@ -94,7 +101,14 @@ class SafeCollectionReference {
   constructor(private collPath: string, private realCollRef: any) {}
 
   doc(docId: string) {
-    const realDoc = this.realCollRef ? this.realCollRef.doc(docId) : null;
+    let realDoc = null;
+    try {
+      if (this.realCollRef && typeof this.realCollRef.doc === "function") {
+        realDoc = this.realCollRef.doc(docId);
+      }
+    } catch (err) {
+      console.warn(`Firestore doc retrieval failed for docId ${docId}:`, err);
+    }
     return new SafeDocumentReference(this.collPath, docId, realDoc);
   }
 
@@ -139,7 +153,14 @@ class SafeCollectionReference {
 class SafeFirestore {
   constructor(private realDb: any) {}
   collection(collName: string) {
-    const realColl = this.realDb ? this.realDb.collection(collName) : null;
+    let realColl = null;
+    try {
+      if (this.realDb && typeof this.realDb.collection === "function") {
+        realColl = this.realDb.collection(collName);
+      }
+    } catch (err) {
+      console.warn(`Firestore collection retrieval failed for collName ${collName}:`, err);
+    }
     return new SafeCollectionReference(collName, realColl);
   }
 }
@@ -1003,14 +1024,9 @@ async function startViteMiddleware() {
     });
   }
 
-  // Skip Port Listener in serverless platforms like Vercel to avoid startup timeouts
-  if (!process.env.VERCEL) {
-    app.listen(PORT, "0.0.0.0", () => {
-      console.log(`[SecureBox Server] Server running securely inside sandbox on http://localhost:${PORT}`);
-    });
-  }
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`[SecureBox Server] Server running securely inside sandbox on http://localhost:${PORT}`);
+  });
 }
 
 startViteMiddleware();
-
-export default app;
