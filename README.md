@@ -1,20 +1,41 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# SecureBox
 
-# Run and deploy your AI Studio app
+SecureBox is an AI-powered SaaS platform that helps users protect their email inbox from spam, phishing, scams, and malicious content. It uses AI (Gemini API) to analyze emails and automatically classify, detect threats, and organize inbox content intelligently.
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/1fa31f42-fb1a-4b38-914f-d908e35987ed
+## Features
 
-## Run Locally
+- Google & GitHub Authentication
+- AI-powered email spam & phishing detection (Gemini API)
+- Smart inbox organization
+- Suspicious link & sender detection
+- AI-based email summarization
+- Clean modern dashboard UI
+- Fast performance with modern frontend stack
 
-**Prerequisites:**  Node.js
+---
 
+## Tech Stack
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### Frontend
+- Next.js (App Router)
+- React
+- TypeScript
+- Vite (for fast tooling / components where needed)
+- Tailwind CSS (UI styling)
+
+### Backend
+- Node.js
+- Next.js API Routes (or Express if separated)
+- Firebase Auth (Google / GitHub OAuth)
+
+### AI Integration
+- Google Gemini API
+
+### Database (optional / extendable)
+- PostgreSQL / Firebase Firestore
+
+---
+
+## Project Structure
