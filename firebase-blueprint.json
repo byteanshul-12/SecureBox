@@ -1,0 +1,123 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User account settings, preferences, and subscriptions",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "lastLoginAt": { "type": "string", "format": "date-time" },
+        "protectionLevel": { "type": "string", "enum": ["relaxed", "balanced", "strict", "enterprise"] },
+        "subscription": { "type": "string", "enum": ["free", "superman", "batman"] }
+      },
+      "required": ["uid", "email"]
+    },
+    "AutomationRule": {
+      "title": "Automation Rule",
+      "description": "AI inbox organization dynamic rules",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "emailType": { "type": "string", "enum": ["newsletter", "promotion", "cold_outreach", "high_risk", "phishing", "scam", "suspicious", "important", "personal", "work"] },
+        "action": { "type": "string", "enum": ["label", "archive", "mark_read", "move_trash", "warning"] },
+        "labelName": { "type": "string" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["id", "userId", "emailType", "action", "active"]
+    },
+    "ScannedEmail": {
+      "title": "Scanned Email",
+      "description": "Security scanning and classification outcome for Gmail messages",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "subject": { "type": "string" },
+        "date": { "type": "string" },
+        "snippet": { "type": "string" },
+        "spamScore": { "type": "integer" },
+        "phishingScore": { "type": "integer" },
+        "threatScore": { "type": "integer" },
+        "confidenceScore": { "type": "integer" },
+        "riskLevel": { "type": "string", "enum": ["Safe", "Low Risk", "Medium Risk", "High Risk", "Critical"] },
+        "explanation": { "type": "string" },
+        "riskFactors": { "type": "array" },
+        "recommendedAction": { "type": "string" },
+        "classification": { "type": "string", "enum": ["Important", "Personal", "Work", "Newsletter", "Promotion", "Marketing", "Cold Outreach", "Spam", "Phishing", "Scam", "Suspicious"] },
+        "appliedGmailLabels": { "type": "array" },
+        "scannedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "spamScore", "phishingScore", "threatScore", "riskLevel", "classification"]
+    },
+    "Waitlist": {
+      "title": "Waitlist",
+      "description": "Emails registered for the upcoming Chrome extension",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "registeredAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email"]
+    },
+    "ActivityLog": {
+      "title": "Activity Log",
+      "description": "Audit trails for security scanning, OAuth connection, or rule triggering",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "action": { "type": "string" },
+        "type": { "type": "string", "enum": ["security", "connection", "rules", "system"] },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "action", "type"]
+    },
+    "OTPVerification": {
+      "title": "OTP Verification",
+      "description": "Simulated passwordless direct OTP login codes",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "email": { "type": "string" },
+        "otp": { "type": "string" },
+        "expiresAt": { "type": "string", "format": "date-time" },
+        "verified": { "type": "boolean" }
+      },
+      "required": ["email", "otp", "expiresAt", "verified"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "#/entities/User",
+      "description": "Profile settings and subscriptions for the authorized user"
+    },
+    "/users/{userId}/rules/{ruleId}": {
+      "schema": "#/entities/AutomationRule",
+      "description": "Customized action rules driven automatically by the classification"
+    },
+    "/users/{userId}/emails/{messageId}": {
+      "schema": "#/entities/ScannedEmail",
+      "description": "Details of the scanned emails, risk evaluations, and applied tags"
+    },
+    "/users/{userId}/activity/{logId}": {
+      "schema": "#/entities/ActivityLog",
+      "description": "List of scans, rule actions, and auth logs"
+    },
+    "/waitlist/{waitlistId}": {
+      "schema": "#/entities/Waitlist",
+      "description": "Registry of emails for extension waitlist"
+    },
+    "/otp_verifications/{verificationId}": {
+      "schema": "#/entities/OTPVerification",
+      "description": "Simulator documents for email OTP authentication"
+    }
+  }
+}

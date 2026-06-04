@@ -1,0 +1,6 @@
+{
+  "name": "SecureBox",
+  "description": "SecureBox is an intelligent Gmail security and inbox intelligence platform that uses real Gmail data via Google OAuth to scan, organize, and safe-keep your email inbox using Gemini.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
